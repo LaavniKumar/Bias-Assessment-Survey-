@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bias Assessment Survey — MBA Decision-Making Under AI Uncertainty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #1e40af;
+  --accent-light: #dbeafe;
+  --accent-glow: rgba(30,64,175,0.12);
+  --card: #ffffff;
+  --bg: #f5f3f0;
+  --bg-warm: #faf8f5;
+  --border: #e2ddd5;
+  --border-focus: #1e40af;
+  --selected: #eff6ff;
+  --scenario: #f8f6f2;
+  --input-bg: #faf9f7;
+  --shadow: rgba(0,0,0,0.05);
+  --shadow-lg: rgba(0,0,0,0.08);
+  --text-1: #1a1612;
+  --text-2: #5c554a;
+  --text-3: #9c9488;
+  --green: #166534;
+  --green-bg: #dcfce7;
+  --yellow: #854d0e;
+  --yellow-bg: #fef9c3;
+  --orange: #9a3412;
+  --orange-bg: #ffedd5;
+  --red: #991b1b;
+  --red-bg: #fee2e2;
+  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  color: var(--text-1);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.header h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-1);
+}
+.header .subtitle {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  margin-top: 6px;
+  font-weight: 400;
+}
+
+/* ── Progress ── */
+.progress-wrap { margin-bottom: 32px; }
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.progress-track {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 36px 32px;
+  box-shadow: 0 1px 3px var(--shadow), 0 8px 24px var(--shadow);
+  animation: cardIn 0.4s ease-out;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-title {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.card-sub {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  margin-bottom: 28px;
+  line-height: 1.55;
+}
+
+/* ── Questions ── */
+.q-label {
+  font-weight: 600;
+  font-size: 0.93rem;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.q-group { margin-bottom: 28px; }
+.q-group:last-child { margin-bottom: 0; }
+
+/* ── Options ── */
+.opt-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text-1);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--sans);
+}
+.opt-btn:hover { border-color: var(--text-3); }
+.opt-btn.selected {
+  border-color: var(--accent);
+  background: var(--selected);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.opt-btn.multi::before {
+  content: '';
+  display: inline-block;
+  width: 17px; height: 17px;
+  border: 2px solid var(--text-3);
+  border-radius: 4px;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  transition: all 0.15s;
+}
+.opt-btn.multi.selected::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l3 3 5-6' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 13px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sel-count {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin: -4px 0 18px;
+}
+
+/* ── Scenario box ── */
+.scenario {
+  background: var(--scenario);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text-2);
+  border-left: 3px solid var(--border);
+}
+.scenario strong { color: var(--text-1); }
+
+/* ── Textarea ── */
+.text-input {
+  width: 100%;
+  min-height: 90px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text-1);
+  font-size: 0.9rem;
+  font-family: var(--sans);
+  resize: vertical;
+  line-height: 1.55;
+  transition: border-color 0.2s;
+}
+.text-input:focus { outline: none; border-color: var(--accent); }
+.text-input::placeholder { color: var(--text-3); }
+
+/* ── Slider ── */
+.slider-wrap { margin: 16px 0 20px; }
+.slider-label {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.slider-track { position: relative; }
+.slider-track input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+.slider-track input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.slider-track input[type=range]::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.slider-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+.slider-val {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* ── Rank ── */
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.rank-num {
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  min-width: 28px; height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.rank-text { flex: 1; }
+.rank-arrows { display: flex; flex-direction: column; gap: 1px; }
+.rank-arrows button {
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  cursor: pointer;
+  color: var(--text-2);
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.rank-arrows button:hover:not(:disabled) { background: var(--accent-light); }
+.rank-arrows button:disabled { opacity: 0.25; cursor: default; }
+
+/* ── Programme grid ── */
+.prog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+@media (max-width: 560px) { .prog-grid { grid-template-columns: 1fr; } }
+.prog-card {
+  background: var(--scenario);
+  padding: 18px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text-2);
+  border-left: 3px solid var(--border);
+}
+.prog-card strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+/* ── Navigation ── */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+.nav.right-only { justify-content: flex-end; }
+.btn {
+  padding: 13px 32px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn-ghost {
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text-2);
+}
+.btn-ghost:hover { border-color: var(--text-3); }
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: default;
+  filter: none;
+}
+
+/* ── Results ── */
+.r-hero {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 40px 32px 32px;
+  box-shadow: 0 1px 3px var(--shadow), 0 8px 24px var(--shadow);
+  margin-bottom: 24px;
+  animation: cardIn 0.5s ease-out;
+}
+.r-hero h2 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.r-hero-body {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.r-hero-note {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* dot summary */
+.dot-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 24px 0 8px;
+}
+.dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.4s ease;
+}
+.dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  transform: scale(1.15);
+}
+.dot-label-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.dot-label-row span {
+  width: 12px;
+  font-size: 0;
+}
+
+/* top 3 section */
+.r-top3 {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 1px 3px var(--shadow), 0 8px 24px var(--shadow);
+  margin-bottom: 24px;
+  animation: cardIn 0.5s ease-out;
+  animation-delay: 0.08s;
+  animation-fill-mode: both;
+}
+.r-top3 h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+.top3-item {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.top3-item:last-child { border-bottom: none; padding-bottom: 0; }
+.top3-item:first-child { padding-top: 0; }
+.top3-name {
+  font-weight: 700;
+  font-size: 0.93rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.top3-num {
+  background: var(--accent);
+  color: white;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.top3-desc {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-left: 30px;
+}
+
+/* full profile section header */
+.r-section-head {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 28px 32px;
+  box-shadow: 0 1px 3px var(--shadow), 0 8px 24px var(--shadow);
+  margin-bottom: 16px;
+  animation: cardIn 0.5s ease-out;
+  animation-delay: 0.15s;
+  animation-fill-mode: both;
+}
+.r-section-head h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0;
+}
+.r-section-head p {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* bias profile cards */
+.bp-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px var(--shadow);
+  animation: cardIn 0.4s ease-out;
+  animation-fill-mode: both;
+}
+.bp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.bp-name {
+  font-weight: 700;
+  font-size: 0.93rem;
+}
+.bp-num {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  font-weight: 500;
+}
+/* slider track */
+.bp-slider-wrap { margin-bottom: 16px; }
+.bp-track {
+  position: relative;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: visible;
+}
+.bp-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.bp-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+  transition: left 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.bp-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-3);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.bp-details { margin-top: 4px; }
+.bp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: 6px;
+}
+@media (max-width: 480px) {
+  .bp-row { grid-template-columns: 1fr; }
+}
+.bp-block {
+  padding: 10px 0;
+}
+.bp-block-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-3);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.bp-block-text {
+  font-size: 0.84rem;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.bp-pattern {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  padding: 10px 0 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.bp-pattern-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-3);
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+/* synthesis */
+.r-synthesis {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 32px;
+  margin-top: 24px;
+  box-shadow: 0 1px 3px var(--shadow), 0 8px 24px var(--shadow);
+  animation: cardIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+.r-synthesis h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+.r-synthesis p {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.r-synthesis p:last-child { margin-bottom: 0; }
+.r-takeaway {
+  padding-left: 16px;
+  border-left: 3px solid var(--accent);
+  margin: 16px 0;
+}
+.r-takeaway li {
+  font-size: 0.86rem;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin-bottom: 6px;
+  list-style: none;
+  position: relative;
+  padding-left: 4px;
+}
+.r-takeaway li::before {
+  content: '';
+  display: none;
+}
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+
+@media (max-width: 480px) {
+  .wrapper { padding: 24px 14px 60px; }
+  .card { padding: 28px 20px; }
+  .header h1 { font-size: 1.7rem; }
+  .btn { padding: 12px 22px; font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper" id="app">
+  <div class="header">
+    <h1>Bias Assessment Survey</h1>
+    <p class="subtitle">MBA Decision-Making Under AI Uncertainty</p>
+  </div>
+  <div id="progress-area" class="progress-wrap">
+    <div class="progress-meta">
+      <span id="progress-label">Background</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+  <div id="section-container"></div>
+  <div id="nav-area" class="nav right-only"></div>
+</div>
+
+<script>
+// ─── State ──────────────────────────────────────
+const SECTIONS = [
+  "demographics","sunkCost1","cascade","overconfidence","confirmation",
+  "anchoring","availability","identity","affect","statusQuo","dunningKruger",
+  "sunkCost2","results"
+];
+const SECTION_NAMES = {
+  demographics:"Background", sunkCost1:"Scenario 1", cascade:"Scenario 2",
+  overconfidence:"Scenario 3", confirmation:"Scenario 4", anchoring:"Scenario 5",
+  availability:"Scenario 6", identity:"Scenario 7", affect:"Scenario 8",
+  statusQuo:"Scenario 9", dunningKruger:"Scenario 10", sunkCost2:"Scenario 1b",
+  results:"Results"
+};
+
+let idx = 0;
+let prevIdx = -1;
+let R = {
+  q1:null,q2:null,q3:null,
+  q4_rank:["a","b","c","d"],
+  q5:null,q6:"",
+  sc_q1:null,sc_q2a:null,sc_q2b:null,
+  herd_q1:null,herd_q2:null,
+  oc:[50,50,50,50,50],oc_q2:50,
+  cb_sel:[],cb_q2:null,
+  anch_q1:"",anch_q2:4,
+  av_q1:null,av:[50,50,50,50],
+  ipc_q1:null,ipc_q2:null,
+  af_ch:null,af_ab:4,af_ar:4,af_bb:4,af_br:4,
+  sq_q1:null,sq_q2:null,
+  dk_q1:5,dk_q2:null,
+};
+let scores = null;
+
+const Q4_LABELS = {
+  a:"Prestige, alumni network, leadership pipeline",
+  b:"Credential for earning power — weighing cost & outcomes",
+  c:"Specific career trajectory — MBA as efficient path",
+  d:"AI uncertainty — avoiding obsolescence"
+};
+
+// ─── Helpers ────────────────────────────────────
+const $ = s => document.querySelector(s);
+const el = (tag, cls, html) => {
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+};
+
+function render() {
+  const cont = $("#section-container");
+  cont.innerHTML = "";
+  const sec = SECTIONS[idx];
+  const isResults = sec === "results";
+
+  // Progress
+  if(isResults) {
+    $("#progress-area").classList.add("hidden");
+  } else {
+    $("#progress-area").classList.remove("hidden");
+    const pct = Math.round((idx / (SECTIONS.length - 1)) * 100);
+    $("#progress-label").textContent = SECTION_NAMES[sec];
+    $("#progress-pct").textContent = pct + "%";
+    $("#progress-fill").style.width = pct + "%";
+  }
+
+  // Build section
+  const builders = {
+    demographics: buildDemographics,
+    sunkCost1: buildSunkCost1,
+    cascade: buildCascade,
+    overconfidence: buildOverconfidence,
+    confirmation: buildConfirmation,
+    anchoring: buildAnchoring,
+    availability: buildAvailability,
+    identity: buildIdentity,
+    affect: buildAffect,
+    statusQuo: buildStatusQuo,
+    dunningKruger: buildDK,
+    sunkCost2: buildSunkCost2,
+    results: buildResults,
+  };
+  const node = builders[sec]();
+  cont.appendChild(node);
+
+  // Nav
+  buildNav();
+  if(idx !== prevIdx) {
+    window.scrollTo({top:0, behavior:"smooth"});
+    prevIdx = idx;
+  }
+}
+
+function buildNav() {
+  const nav = $("#nav-area");
+  nav.innerHTML = "";
+  const sec = SECTIONS[idx];
+  if(sec === "results") { nav.classList.add("hidden"); return; }
+  nav.classList.remove("hidden");
+  nav.className = idx === 0 ? "nav right-only" : "nav";
+
+  if(idx > 0) {
+    const b = el("button","btn btn-ghost","← Back");
+    b.onclick = () => { idx--; render(); };
+    nav.appendChild(b);
+  }
+  const isLast = idx === SECTIONS.length - 2;
+  const nxt = el("button","btn btn-primary", isLast ? "See My Results" : "Continue →");
+  nxt.disabled = !canProceed();
+  nxt.onclick = () => {
+    if(isLast) scores = computeScores();
+    idx++;
+    render();
+  };
+  nav.appendChild(nxt);
+}
+
+function canProceed() {
+  const s = SECTIONS[idx];
+  switch(s) {
+    case "demographics": return R.q1 && R.q2 && R.q3 && R.q5;
+    case "sunkCost1": return R.sc_q1 && R.sc_q2a;
+    case "cascade": return R.herd_q1 && R.herd_q2;
+    case "overconfidence": return true;
+    case "confirmation": return R.cb_sel.length === 3 && R.cb_q2;
+    case "anchoring": return R.anch_q1.trim().length > 0;
+    case "availability": return R.av_q1;
+    case "identity": return R.ipc_q1 && R.ipc_q2;
+    case "affect": return R.af_ch;
+    case "statusQuo": return R.sq_q1 && R.sq_q2;
+    case "dunningKruger": return R.dk_q2;
+    case "sunkCost2": return R.sc_q2b;
+    default: return true;
+  }
+}
+
+// ─── UI Components ──────────────────────────────
+function makeCard(title, sub) {
+  const c = el("div","card");
+  c.appendChild(el("div","card-title",title));
+  if(sub) c.appendChild(el("div","card-sub",sub));
+  return c;
+}
+
+function makeOptGroup(key, options, currentVal) {
+  const g = el("div","q-group");
+  options.forEach(([v,label]) => {
+    const b = el("button","opt-btn" + (currentVal === v ? " selected" : ""), label);
+    b.onclick = () => { R[key] = v; render(); };
+    g.appendChild(b);
+  });
+  return g;
+}
+
+function makeMultiGroup(key, options, max) {
+  const g = el("div","q-group");
+  options.forEach(([v,label]) => {
+    const sel = R[key].includes(v);
+    const b = el("button","opt-btn multi" + (sel ? " selected" : ""), label);
+    b.onclick = () => {
+      if(sel) R[key] = R[key].filter(x=>x!==v);
+      else if(R[key].length < max) R[key] = [...R[key], v];
+      render();
+    };
+    g.appendChild(b);
+  });
+  const cnt = el("div","sel-count",`${R[key].length}/${max} selected`);
+  g.appendChild(cnt);
+  return g;
+}
+
+function makeSlider(arrKey, arrIdx, label, min=0, max=100, leftL, rightL) {
+  const w = el("div","slider-wrap");
+  if(label) w.appendChild(el("div","slider-label",label));
+  const t = el("div","slider-track");
+  const inp = document.createElement("input");
+  inp.type = "range"; inp.min = min; inp.max = max;
+  const val = arrIdx !== null ? R[arrKey][arrIdx] : R[arrKey];
+  inp.value = val;
+  inp.oninput = (e) => {
+    if(arrIdx !== null) R[arrKey][arrIdx] = +e.target.value;
+    else R[arrKey] = +e.target.value;
+    // Update just the value display
+    const valSpan = w.querySelector('.slider-val');
+    if(valSpan) valSpan.textContent = e.target.value + (max===100?"%":"");
+  };
+  t.appendChild(inp);
+  w.appendChild(t);
+  const m = el("div","slider-meta");
+  m.innerHTML = `<span>${leftL||min}</span><span class="slider-val">${val}${max===100?"%":""}</span><span>${rightL||max}</span>`;
+  w.appendChild(m);
+  return w;
+}
+
+function makeRankGroup() {
+  const g = el("div","q-group");
+  R.q4_rank.forEach((id, i) => {
+    const item = el("div","rank-item");
+    item.innerHTML = `
+      <span class="rank-num">${i+1}</span>
+      <span class="rank-text">${Q4_LABELS[id]}</span>
+      <span class="rank-arrows">
+        <button ${i===0?"disabled":""}  data-dir="-1" data-idx="${i}">▲</button>
+        <button ${i===3?"disabled":""} data-dir="1" data-idx="${i}">▼</button>
+      </span>`;
+    item.querySelectorAll(".rank-arrows button").forEach(b => {
+      b.onclick = () => {
+        const d = +b.dataset.dir, j = +b.dataset.idx, sw = j+d;
+        if(sw<0||sw>3) return;
+        [R.q4_rank[j], R.q4_rank[sw]] = [R.q4_rank[sw], R.q4_rank[j]];
+        render();
+      };
+    });
+    g.appendChild(item);
+  });
+  return g;
+}
+
+function addLabel(parent, text) {
+  parent.appendChild(el("div","q-label",text));
+}
+function addDivider(parent) {
+  parent.appendChild(el("div","divider"));
+}
+
+// ─── Section Builders ───────────────────────────
+function buildDemographics() {
+  const c = makeCard("Background & Context","These won't be scored — they help interpret your results.");
+  let g;
+
+  addLabel(c, "When did you complete (or will you complete) your undergraduate degree?");
+  c.appendChild(makeOptGroup("q1",[["a","2024 or earlier"],["b","2025"],["c","2026"],["d","Other"]], R.q1));
+
+  addLabel(c, "Months of full-time work experience after undergrad?");
+  c.appendChild(makeOptGroup("q2",[["a","None — still studying"],["b","Less than 12 months"],["c","12–24 months"],["d","25–36 months"],["e","More than 36 months"]], R.q2));
+
+  addLabel(c, "Primary field of undergraduate degree?");
+  c.appendChild(makeOptGroup("q3",[["a","Engineering / Technology"],["b","Commerce / Business / Economics"],["c","Sciences"],["d","Humanities / Social Sciences"],["e","Other"]], R.q3));
+
+  addLabel(c, "Rank your motivations for considering an MBA:");
+  c.appendChild(makeRankGroup());
+
+  addLabel(c, "When you think about where AI is heading, which concern feels most pressing?");
+  c.appendChild(makeOptGroup("q5",[
+    ["a","Whether MBA-track roles will still exist in their current form"],
+    ["b","Whether the MBA's prestige will hold against AI-native skills"],
+    ["c","Whether the financial return still makes mathematical sense"],
+    ["d","Whether anyone can actually predict what will happen"],
+  ], R.q5));
+
+  addLabel(c, "What made you take this survey? <span style='font-weight:400;color:var(--text-3)'>(optional)</span>");
+  g = el("div","q-group");
+  const ta = el("textarea","text-input");
+  ta.placeholder = "Share your motivation...";
+  ta.value = R.q6;
+  ta.oninput = e => R.q6 = e.target.value;
+  g.appendChild(ta);
+  c.appendChild(g);
+  return c;
+}
+
+function buildSunkCost1() {
+  const c = makeCard("Scenario: The MBA Dilemma","Read the following situations and share what you'd advise.");
+  c.appendChild(el("div","scenario",`Your friend is halfway through an MBA at a well-known Indian university. Placement rates have hit an all-time low and MBA hiring is declining. She's realising she may not want to continue. She has already spent ₹25 lakh, and completing the remaining year would cost another ₹25 lakh.`));
+  addLabel(c,"What advice would you give her?");
+  c.appendChild(makeOptGroup("sc_q1",[["a","Leave the programme and pursue what she actually wants"],["b","Finish the degree — she's already halfway done"]], R.sc_q1));
+
+  addDivider(c);
+  c.appendChild(el("div","scenario",`Your friend <strong>Rahul</strong> is thinking about enrolling in a 6-month data analytics certification. People who completed it say the curriculum is outdated, projects don't reflect real work, and employers don't recognise it. However, it has a strong alumni network and good guest lectures.`));
+  addLabel(c,"What would you advise Rahul?");
+  c.appendChild(makeOptGroup("sc_q2a",[["a","Don't enrol — the core offering isn't strong enough"],["b","Enrol anyway — the alumni network might be worth it"]], R.sc_q2a));
+  return c;
+}
+
+function buildSunkCost2() {
+  const c = makeCard("One More Scenario","Almost done — just one more situation to consider.");
+  c.appendChild(el("div","scenario",`Your friend <strong>Priya</strong> enrolled in a 6-month data analytics certification 3 months ago and already paid ₹2 lakh (non-refundable). She's finding the curriculum is outdated, projects don't reflect real work, and employers don't recognise it. However, it has a strong alumni network and good guest lectures. She has 3 months left.`));
+  addLabel(c,"What would you advise Priya?");
+  c.appendChild(makeOptGroup("sc_q2b",[["a","Drop out now — the remaining 3 months won't fix the core problems"],["b","Finish the course — she's already paid and is halfway through"]], R.sc_q2b));
+  return c;
+}
+
+function buildCascade() {
+  const c = makeCard("Programme Choice","Consider these two MBA programmes.");
+  c.appendChild(el("div","scenario",`<strong>Programme A:</strong> Widely regarded as the most prestigious in India. All toppers from your college and coaching circle are aiming for it.<br><br><strong>Programme B:</strong> Less well-known but has identical placement rates, similar faculty quality, and costs 30% less.<br><br>You've been admitted to both.`));
+  addLabel(c,"Which one do you choose?");
+  c.appendChild(makeOptGroup("herd_q1",[["a","Programme A"],["b","Programme B"]], R.herd_q1));
+  addDivider(c);
+  addLabel(c,"Among your peers considering an MBA, how many choose primarily because \"everyone else is applying there\"?");
+  c.appendChild(makeOptGroup("herd_q2",[["a","Almost all of them"],["b","More than half"],["c","About a quarter"],["d","Very few — most research independently"]], R.herd_q2));
+  return c;
+}
+
+function buildOverconfidence() {
+  const c = makeCard("Confidence Calibration","Rate your confidence that each prediction about AI's impact on MBA-track careers over 5 years is correct.");
+  const preds = [
+    "Consulting firms will still employ the same number of MBA grads as today",
+    "AI won't perform core tasks of a mid-level strategy consultant",
+    "Top-10 IIM median CTC will be higher in 2030 (inflation-adjusted)",
+    "MBA grads will have significant advantage in AI-era leadership roles",
+    "Financial modelling roles at investment banks will remain largely unchanged"
+  ];
+  preds.forEach((p,i) => c.appendChild(makeSlider("oc",i,p,0,100,"0% — No confidence","100% — Certain")));
+  addDivider(c);
+  addLabel(c,"Compared to other MBA aspirants, how well can you predict which careers will be AI-proof?");
+  c.appendChild(makeSlider("oc_q2",null,null,0,100,"0% — Worse than most","100% — Better than all"));
+  return c;
+}
+
+function buildConfirmation() {
+  const c = makeCard("Evidence Evaluation","Select the 3 data points you find most trustworthy (exactly 3).");
+  const items = [
+    ["a","A top Indian MBA programme achieved 100% placement for 2026, with leading consulting firms making 70+ offers. Analytics offers jumped 150% YoY."],
+    ["b","A major global consulting firm cut 5,000 staff while deploying 12,000 AI agents. Work requiring 14 consultants now needs 2–3 plus AI."],
+    ["c","Management graduates have the highest global employability at 78%, ahead of engineering (71.5%) and science (58%)."],
+    ["d","Top Indian MBA fees rose 43% in a year, while mid-tier placement salaries dropped 10–15% in 2024."],
+    ["e","50%+ of Tier 2–3 MBA candidates remain unplaced. Only 7% of non-premium B-school grads are employable."],
+    ["f","Two top IIMs reported average salaries of ₹36 LPA (up 5%) and highest packages reaching ₹71.4 LPA."],
+    ["g","80% of Indian business leaders prefer less experienced candidates with AI skills over more experienced ones without."],
+  ];
+  c.appendChild(makeMultiGroup("cb_sel", items, 3));
+  addDivider(c);
+  addLabel(c,"Which best describes your current position?");
+  c.appendChild(makeOptGroup("cb_q2",[
+    ["a","MBA is broadly insulated from AI and remains the best preparation for leadership"],
+    ["b","MBA faces real AI risk but is still the most reliable next step for me"],
+    ["c","MBA's value is uncertain, but it feels like the most obvious path"],
+    ["d","I'm seriously considering alternatives because of AI uncertainty"],
+  ], R.cb_q2));
+  return c;
+}
+
+function buildAnchoring() {
+  const c = makeCard("First Impressions","Think back to the very beginning of your MBA consideration.");
+  addLabel(c,"What was the first piece of evidence, data, or experience that made you seriously consider doing an MBA?");
+  const g = el("div","q-group");
+  const ta = el("textarea","text-input");
+  ta.placeholder = "Describe briefly...";
+  ta.value = R.anch_q1;
+  ta.oninput = e => { R.anch_q1 = e.target.value; buildNav(); };
+  g.appendChild(ta);
+  c.appendChild(g);
+  addLabel(c,"How much does that original evidence still influence your current evaluation?");
+  c.appendChild(makeSlider("anch_q2",null,null,1,7,"1 — No influence at all","7 — Still the most important factor"));
+  return c;
+}
+
+function buildAvailability() {
+  const c = makeCard("Risk Perception","Think about how you evaluate the value of an MBA.");
+  addLabel(c,"When you think about the value of an MBA, which source comes to mind first?");
+  c.appendChild(makeOptGroup("av_q1",[
+    ["a","A specific person I know who did well after an MBA"],
+    ["b","Published placement statistics or salary data"],
+    ["c","Social media / LinkedIn content about MBA success"],
+    ["d","News articles about AI disrupting MBA careers"],
+    ["e","Conversations with family or mentors"],
+  ], R.av_q1));
+  addDivider(c);
+  addLabel(c,"Estimate the probability (0–100%) of each event affecting your career in the next 10 years:");
+  const evts = [
+    "Your job being significantly automated by AI",
+    "A major recession reducing job availability",
+    "Your industry disrupted by geopolitical events",
+    "MBA degree losing its hiring advantage"
+  ];
+  evts.forEach((e,i) => c.appendChild(makeSlider("av",i,e,0,100,"0%","100%")));
+  return c;
+}
+
+function buildIdentity() {
+  const c = makeCard("Responding to Evidence","How would you respond to challenging information?");
+  c.appendChild(el("div","scenario","You read a credible research report showing that within 5 years, AI tools will perform 60% of the tasks currently done by mid-level management consultants."));
+  addLabel(c,"How would you respond?");
+  c.appendChild(makeOptGroup("ipc_q1",[
+    ["a","I would seriously reconsider whether consulting is the right post-MBA path"],
+    ["b","I would look for more info to verify whether this applies to the Indian market"],
+    ["c","These reports tend to overstate things — consulting will always need human judgement"],
+    ["d","This doesn't worry me — a top MBA will insulate me from this disruption"],
+  ], R.ipc_q1));
+  addDivider(c);
+  addLabel(c,"You have one free weekend before your MBA deadline. You can only do one:");
+  c.appendChild(makeOptGroup("ipc_q2",[
+    ["a","Talk to 3–4 professionals who left MBA-track careers — understand what went wrong"],
+    ["b","Talk to 3–4 successful MBA alumni — deepen your understanding of the programme"],
+  ], R.ipc_q2));
+  return c;
+}
+
+function buildAffect() {
+  const c = makeCard("Programme Comparison","Read both profiles carefully, then respond.");
+  const g = el("div","prog-grid");
+  g.innerHTML = `
+    <div class="prog-card"><strong>Programme A</strong>93% placement, ₹24 LPA median salary, clear YoY progression. Well-structured curriculum. Not much brand recognition. Alumni: "solid and reliable."</div>
+    <div class="prog-card"><strong>Programme B</strong>Less consistent data — some great years, others unclear. Carries a name commanding immediate respect. Widely regarded as prestigious. Alumni: "transformative" and "life-changing."</div>`;
+  c.appendChild(g);
+  addLabel(c,"What would you most likely do?");
+  c.appendChild(makeOptGroup("af_ch",[
+    ["a","Choose A — the outcomes are clearer and more predictable"],
+    ["b","Lean toward A, but seriously consider what B offers beyond the numbers"],
+    ["c","Lean toward B, while checking outcomes are reasonable"],
+    ["d","Choose B — it feels more compelling, and the data will probably work out"],
+  ], R.af_ch));
+  addDivider(c);
+  addLabel(c,"Rate each programme:");
+  c.appendChild(el("div","q-label","<strong>Programme A</strong>"));
+  c.appendChild(makeSlider("af_ab",null,"Career benefit?",1,7,"1 — Not beneficial","7 — Extremely"));
+  c.appendChild(makeSlider("af_ar",null,"How risky?",1,7,"1 — Not risky","7 — Extremely"));
+  c.appendChild(el("div","q-label","<strong>Programme B</strong>"));
+  c.appendChild(makeSlider("af_bb",null,"Career benefit?",1,7,"1 — Not beneficial","7 — Extremely"));
+  c.appendChild(makeSlider("af_br",null,"How risky?",1,7,"1 — Not risky","7 — Extremely"));
+  return c;
+}
+
+function buildStatusQuo() {
+  const c = makeCard("Default vs. Alternative","Consider this data point and your observations.");
+  c.appendChild(el("div","scenario","The WEF Future of Jobs Report 2025 found that 30% of Indian companies plan to move toward skills-based hiring, removing degree requirements entirely — compared to 19% globally."));
+  addLabel(c,"What's closest to your reaction?");
+  c.appendChild(makeOptGroup("sq_q1",[
+    ["a","Actively reconsider whether MBA is still the right path and explore alternatives"],
+    ["b","Do more research but probably still lean toward the MBA"],
+    ["c","This kind of data comes and goes — the MBA has survived before"],
+  ], R.sq_q1));
+  addDivider(c);
+  addLabel(c,"Among early-career graduates choosing between MBA and non-traditional paths, how many choose MBA primarily because it's the \"safe default\"?");
+  c.appendChild(makeOptGroup("sq_q2",[
+    ["a","Almost all — the MBA is just what \"people like us\" do"],
+    ["b","More than half"],
+    ["c","About a quarter"],
+    ["d","Very few — most genuinely evaluate alternatives"],
+  ], R.sq_q2));
+  return c;
+}
+
+function buildDK() {
+  const c = makeCard("AI Literacy","A quick self-assessment of your AI knowledge.");
+  addLabel(c,"How AI-literate would you say you are?");
+  c.appendChild(makeSlider("dk_q1",null,null,1,10,"1 — Barely know what AI is","10 — Could build & deploy AI systems"));
+  addDivider(c);
+  addLabel(c,"If you could no longer use any AI tools, how would your output quality change?");
+  c.appendChild(makeOptGroup("dk_q2",[
+    ["a","It would improve — I'm more effective without AI"],
+    ["b","It would stay about the same"],
+    ["c","It would decline somewhat"],
+    ["d","It would decline significantly"],
+  ], R.dk_q2));
+  return c;
+}
+
+// ─── Scoring ────────────────────────────────────
+function computeScores() {
+  const S = {};
+
+  // 1. Sunk Cost
+  let scFlip = R.sc_q2a==="a" && R.sc_q2b==="b";
+  let sc = scFlip ? 2 : (R.sc_q1==="b" && R.sc_q2b==="b") ? 1 : 0;
+  S.sunkCost = {s:sc, m:2,
+    label: sc===2?"Detected":sc===1?"Mild":"Not detected",
+    detail: scFlip ? "Your advice flipped between the matched scenarios — the only difference was prior payment. This is the key diagnostic pattern for sunk cost bias."
+      : sc===1 ? "Some signals of sunk-cost thinking, but no clear flip between matched scenarios."
+      : "You gave consistent forward-looking advice regardless of prior investment."};
+
+  // 2. Cascade
+  let h1 = R.herd_q1==="a"?1:0, h2 = {a:3,b:2,c:1,d:0}[R.herd_q2]||0;
+  let ht = h1 + (h2>=2?1:0);
+  S.cascade = {s:ht, m:2,
+    label: ht>=2?"High":ht===1?"Moderate":"Low",
+    detail: h1&&h2>=2 ? "Chose prestige despite identical outcomes and recognise herding is common — yet don't see yourself as different."
+      : !h1&&h2>=2 ? "Resisted herd pull but recognise it in others. Strong critical-thinking signal."
+      : h1 ? "Chose prestige over data, suggesting social proof influence."
+      : "Chose based on data rather than prestige signals."};
+
+  // 3. Overconfidence
+  let avg = R.oc.reduce((a,b)=>a+b,0)/5, sp = R.oc_q2;
+  let oc = 0;
+  if(avg>60)oc++; if(avg>80)oc++; if(sp>60)oc++; if(sp>75)oc++;
+  oc = Math.min(oc,3);
+  S.overconfidence = {s:oc, m:3,
+    label: oc>=3?"Strong":oc===2?"Moderate":oc===1?"Mild":"Low",
+    detail: avg>60&&sp>75 ? `Average confidence ${Math.round(avg)}% on unpredictable events + top-quartile self-rating (${sp}%). Strongest overconfidence signal.`
+      : avg>60 ? `Average confidence of ${Math.round(avg)}% on inherently uncertain predictions suggests overconfidence.`
+      : sp>75 ? `Self-rated forecasting ability at ${sp}% vs peers — statistically unlikely for most respondents.`
+      : "Confidence levels are well-calibrated for the uncertainty involved."};
+
+  // 4. Confirmation
+  const pro=["a","c","f"], cau=["b","d","e","g"];
+  let pc = R.cb_sel.filter(x=>pro.includes(x)).length;
+  let cc = R.cb_sel.filter(x=>cau.includes(x)).length;
+  let pp = ["a","b"].includes(R.cb_q2), sk = R.cb_q2==="d";
+  let cb = 0;
+  if(pp&&pc===3) cb=3; else if(sk&&cc===3) cb=3;
+  else if(pp&&pc>=2) cb=2; else if(sk&&cc>=2) cb=2;
+  else if(pc===3||cc===3) cb=1;
+  S.confirmation = {s:cb, m:3,
+    label: cb>=3?"Strong":cb===2?"Moderate":cb===1?"Mild":"Low",
+    detail: cb>=3 ? `Selected ${pc===3?"all 3 pro-MBA":"all 3 cautionary"} data points, aligned with your prior belief. Required ignoring the majority of available evidence.`
+      : cb===0 ? "Evaluated evidence on merits rather than alignment with your prior position."
+      : "Some tendency to weight confirming evidence more heavily."};
+
+  // 5. Anchoring
+  let ap = R.anch_q2;
+  let an = ap>=5?2:ap>=3?1:0;
+  S.anchoring = {s:an, m:2,
+    label: an===2?"Strong":an===1?"Moderate":"Low",
+    detail: ap>=6 ? `Original anchor holds at ${ap}/7 — remains a dominant factor despite new evidence.`
+      : ap<=2 ? "Original anchor substantially updated. Healthy evidence updating."
+      : `Moderate anchor persistence at ${ap}/7.`};
+
+  // 6. Availability
+  let ai=R.av[0], re=R.av[1], ge=R.av[2];
+  let avIdx = ai - (re+ge)/2;
+  let av = avIdx>40?3:avIdx>25?2:avIdx>10?1:0;
+  S.availability = {s:av, m:3,
+    label: av>=3?"Extreme":av===2?"Strong":av===1?"Moderate":"Low",
+    detail: av>=2 ? `AI automation rated ${Math.round(avIdx)} points above comparable risks. Information diet may be heavily skewing perception.`
+      : av===1 ? "AI risk somewhat inflated relative to less vivid threats."
+      : "Risks estimated relatively evenly across domains."};
+
+  // 7. IPC
+  let i1 = {a:0,b:1,c:2,d:3}[R.ipc_q1]||0, i2 = R.ipc_q2==="a"?0:1;
+  let ip = Math.min(i1+i2,4);
+  S.identity = {s:ip, m:4,
+    label: ip>=3?"Highly Protective":ip===2?"Moderate":ip===1?"Mild":"Open",
+    detail: ip>=3 ? "Dismisses threatening evidence and prefers plan-reinforcing information. Decision may be immune to counter-evidence."
+      : ip===0 ? "Engages with threatening evidence and seeks disconfirming information. Strongest evidence-responsive profile."
+      : "Some mild identity-protective tendencies, but still open to challenge."};
+
+  // 8. Affect
+  let ac = {a:0,b:1,c:2,d:3}[R.af_ch]||0;
+  let bi = R.af_bb - R.af_ab, ri = R.af_ar - R.af_br;
+  let aIdx = bi + ri;
+  let af = (ac>=2&&aIdx>0)?3:(ac>=2||aIdx>2)?2:(ac===1||aIdx>0)?1:0;
+  S.affect = {s:af, m:3,
+    label: af>=3?"Strong":af===2?"Moderate":af===1?"Mild":"Low",
+    detail: af>=3 ? "Emotional warmth inflates benefit and suppresses risk simultaneously. Textbook affect heuristic."
+      : af===0 ? "Choice and ratings consistent with objective profiles. Rational baseline."
+      : "Some affect influence — emotional associations partially shaping evaluation."};
+
+  // 9. Status Quo
+  let s1 = {a:0,b:1,c:2}[R.sq_q1]||0, s2 = {a:3,b:2,c:1,d:0}[R.sq_q2]||0;
+  let sq = (s1===2&&s2>=2)?3:(s1>=1&&s2>=2)?2:(s1>=1||s2>=2)?1:0;
+  S.statusQuo = {s:sq, m:3,
+    label: sq>=3?"Strong":sq===2?"Moderate":sq===1?"Mild":"Low",
+    detail: sq>=3 ? "Defends MBA as default and sees this as widespread — framing conformity as reasonable."
+      : sq===0 ? "Open to alternatives; don't treat MBA as unquestionable default."
+      : "Some status quo pull, but partially open to reconsidering."};
+
+  // 10. DK
+  let dkS = R.dk_q1, dkN = ["a","b"].includes(R.dk_q2);
+  let dkH = dkS>=7;
+  let dk = (dkH&&dkN)?2:0;
+  if(dk===2 && R.q3==="a") dk=1;
+  S.dunningKruger = {s:dk, m:2,
+    label: dk>=2?"Detected":dk===1?"Possible":"Not detected",
+    detail: dk>=2 ? `Self-rated ${dkS}/10 AI literacy but claims tools don't affect output. Familiarity as user may be confused with competence.`
+      : dkH&&!dkN ? "High confidence paired with acknowledged dependency — well-calibrated."
+      : "Self-assessment and tool dependency are consistent."};
+
+  // Overall
+  const keys = Object.keys(S);
+  let trig = keys.filter(k => S[k].s >= Math.ceil(S[k].m/2)).length;
+  S._overall = { triggered: trig, total: keys.length,
+    level: trig>=7?"Very High":trig>=5?"High":trig>=3?"Moderate":trig>=1?"Low":"Minimal" };
+  return S;
+}
+
+function scoreClr(s, m) {
+  const r = s/m;
+  return r>=0.66?"#6366f1":r>=0.33?"#8b5cf6":"#a3a3a3";
+}
+
+const BIAS_CONTENT = {
+  sunkCost: {
+    name:"Sunk Cost Fallacy",
+    pattern_high:"You may find it harder to step away from a path once you've already invested time, money, or effort",
+    pattern_low:"You tend to evaluate options on their future merits rather than past investment",
+    helps:"Staying committed and following through",
+    watch:"You may continue even when a different path now looks stronger",
+    top3:"Past investments may make it harder to change direction, even when a new path looks stronger",
+  },
+  cascade: {
+    name:"Cascade Susceptibility",
+    pattern_high:"You may give added weight to options that others around you are choosing",
+    pattern_low:"You tend to evaluate options independently of what others are doing",
+    helps:"Picking up on strong signals from your environment",
+    watch:"Popular choices may feel more right than they actually are for you",
+    top3:"What others around you are choosing may carry extra weight in your own evaluation",
+  },
+  overconfidence: {
+    name:"Overconfidence Bias",
+    pattern_high:"You may feel fairly confident in your ability to predict outcomes in an uncertain environment",
+    pattern_low:"You show healthy calibration about the limits of your predictions",
+    helps:"Taking decisive action",
+    watch:"Future uncertainty may be higher than it appears",
+    top3:"You may feel more certain about unpredictable outcomes than the evidence supports",
+  },
+  confirmation: {
+    name:"Confirmation Bias",
+    pattern_high:"You may naturally seek out or trust information that aligns with your current thinking",
+    pattern_low:"You tend to weigh evidence on its merits regardless of your prior position",
+    helps:"Building a clear and consistent direction",
+    watch:"Conflicting evidence may not get equal attention",
+    top3:"You tend to give slightly more weight to information that supports your current direction",
+  },
+  anchoring: {
+    name:"Anchoring Bias",
+    pattern_high:"Your first strong impression or data point may continue to shape how you evaluate options",
+    pattern_low:"You update your views readily as new information comes in",
+    helps:"Creating a quick reference point",
+    watch:"New information may not shift your view enough",
+    top3:"Early impressions or data points may still be anchoring how you evaluate the MBA decision",
+  },
+  availability: {
+    name:"Availability Bias",
+    pattern_high:"Examples that are recent, vivid, or easy to recall may feel more representative",
+    pattern_low:"You estimate risks relatively evenly across different domains",
+    helps:"Making decisions feel concrete and relatable",
+    watch:"What comes to mind easily may not reflect the full picture",
+    top3:"Vivid or easily recalled examples may be shaping your sense of what's likely",
+  },
+  identity: {
+    name:"Identity-Protective Cognition",
+    pattern_high:"You may lean toward staying aligned with a direction that feels connected to who you are",
+    pattern_low:"You engage openly with evidence even when it challenges your plans",
+    helps:"Maintaining clarity and consistency",
+    watch:"Challenging information may carry less weight",
+    top3:"Evidence that challenges your current direction may be getting filtered through your sense of identity",
+  },
+  affect: {
+    name:"Affect Heuristic",
+    pattern_high:"The overall feel or pull of an option may influence how you judge its value",
+    pattern_low:"You evaluate options based on data rather than emotional impression",
+    helps:"Quickly identifying what feels compelling",
+    watch:"A strong impression may outweigh detailed comparison",
+    top3:"Your overall impression of an option plays a meaningful role in how you evaluate it",
+  },
+  statusQuo: {
+    name:"Status Quo Bias",
+    pattern_high:"The familiar or commonly chosen option may feel safer",
+    pattern_low:"You're open to exploring alternatives to the conventional path",
+    helps:"Avoiding unnecessary risk",
+    watch:"Alternatives may not be explored fully",
+    top3:"Familiar paths may feel more reliable when making decisions",
+  },
+  dunningKruger: {
+    name:"Dunning-Kruger Effect",
+    pattern_high:"Your confidence in your understanding of AI may not always match how complex the space is",
+    pattern_low:"Your self-assessment of AI literacy appears well-calibrated",
+    helps:"Engaging with new and evolving topics",
+    watch:"Confidence may outpace depth of understanding",
+    top3:"Your confidence in AI understanding may be running ahead of the complexity involved",
+  },
+};
+
+function buildResults() {
+  const wrap = el("div","");
+  const S = scores;
+
+  const biasKeys = ["sunkCost","cascade","overconfidence","confirmation","anchoring","availability","identity","affect","statusQuo","dunningKruger"];
+
+  // Sort by normalized score descending to find top 3
+  const sorted = biasKeys.map(k => ({key:k, norm: S[k].s / S[k].m})).sort((a,b) => b.norm - a.norm);
+  // Top 3 = those with norm > 0 (at least some signal), take up to 3
+  const top3 = sorted.filter(x => x.norm > 0).slice(0, 3);
+  const top3Keys = top3.map(x => x.key);
+  const hasTop3 = top3.length > 0;
+
+  // ── SECTION 1: HERO ──
+  const hero = el("div","r-hero");
+  hero.innerHTML = `
+    <h2>Your MBA Decision Patterns</h2>
+    <div class="r-hero-body">
+      These patterns aren't good or bad — they can be useful in some situations and limiting in others. The goal is simply to recognise them while making important decisions.
+    </div>
+    <div class="r-hero-note">
+      Most people show a mix of these tendencies. This view highlights how they may show up in your decisions.
+    </div>`;
+
+  // Dot summary
+  const dotRow = el("div","dot-row");
+  biasKeys.forEach(k => {
+    const d = el("span","dot" + (top3Keys.includes(k) ? " active" : ""));
+    d.title = BIAS_CONTENT[k].name;
+    dotRow.appendChild(d);
+  });
+  hero.appendChild(dotRow);
+  wrap.appendChild(hero);
+
+  // ── SECTION 2: TOP 3 (if any) ──
+  if(hasTop3) {
+    const t3 = el("div","r-top3");
+    t3.innerHTML = `<h3>Your strongest tendencies</h3>`;
+    top3.forEach((item, i) => {
+      const bc = BIAS_CONTENT[item.key];
+      const div = el("div","top3-item");
+      div.innerHTML = `
+        <div class="top3-name"><span class="top3-num">${i+1}</span>${bc.name}</div>
+        <div class="top3-desc">${bc.top3}</div>`;
+      t3.appendChild(div);
+    });
+    wrap.appendChild(t3);
+  }
+
+  // ── SECTION 3: FULL PROFILE ──
+  const head = el("div","r-section-head");
+  head.innerHTML = `<h3>How different tendencies may show up in your decisions</h3>`;
+  wrap.appendChild(head);
+
+  biasKeys.forEach((k, i) => {
+    const b = S[k];
+    const bc = BIAS_CONTENT[k];
+    const norm = b.s / b.m;
+    const pct = Math.round(norm * 100);
+    const clr = scoreClr(b.s, b.m);
+    const isHigh = norm >= 0.33;
+
+    const card = el("div","bp-card");
+    card.style.animationDelay = (0.2 + i * 0.04) + "s";
+
+    card.innerHTML = `
+      <div class="bp-head">
+        <span class="bp-name">${i+1}. ${bc.name}</span>
+      </div>
+      <div class="bp-slider-wrap">
+        <div class="bp-track">
+          <div class="bp-fill" style="width:${pct}%;background:${clr}"></div>
+          <div class="bp-thumb" style="left:${pct}%;background:${clr}"></div>
+        </div>
+        <div class="bp-labels"><span>Low</span><span>High</span></div>
+      </div>
+      <div class="bp-pattern-label">Your pattern</div>
+      <div class="bp-pattern">${isHigh ? bc.pattern_high : bc.pattern_low}</div>
+      <div class="bp-details">
+        <div class="bp-row">
+          <div class="bp-block">
+            <div class="bp-block-label">Helps with</div>
+            <div class="bp-block-text">${bc.helps}</div>
+          </div>
+          <div class="bp-block">
+            <div class="bp-block-label">Watch out</div>
+            <div class="bp-block-text">${bc.watch}</div>
+          </div>
+        </div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+
+  // ── SECTION 4: SYNTHESIS ──
+  const synth = el("div","r-synthesis");
+  let body = `<h3>What this means for your MBA decision</h3>`;
+  body += `<p>Your responses suggest a mix of structured thinking and intuitive judgment, with certain tendencies becoming stronger when the decision feels important or uncertain.</p>`;
+  body += `<p>Being aware of these patterns can help you:</p>`;
+  body += `<ul class="r-takeaway">
+    <li>Pause before committing to a direction</li>
+    <li>Actively seek out alternative perspectives</li>
+    <li>Check whether first impressions or external signals are influencing your choice</li>
+  </ul>`;
+
+  if(top3.length >= 2) {
+    const names = top3.map(x => BIAS_CONTENT[x.key].name);
+    body += `<p>Your strongest patterns — ${names.join(", ")} — are worth paying particular attention to. They may be the places where your thinking is most likely to take shortcuts without you noticing.</p>`;
+  }
+
+  synth.innerHTML = body;
+  wrap.appendChild(synth);
+
+  return wrap;
+}
+
+
+// ─── Init ───────────────────────────────────────
+render();
+</script>
+</body>
+</html>
